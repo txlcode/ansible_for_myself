@@ -1,0 +1,44 @@
+- name: Print debug infomation eg1 
+  hosts: node02 
+  vars: 
+    IP: "/tmp/test/hah.txt"
+  tasks: 
+  - name: Show debug info 
+    debug: 
+      msg: "{{ IP | dirname }}"
+
+
+
+
+
+
+
+#- name: Print debug infomation eg1
+#  hosts: node02
+#  tasks:
+#  - shell: "ls /opt"
+#    changed_when: false
+#               
+
+#- name: print php-fpm status
+#  hosts: node01
+#  tasks:
+#  - name: status
+#    shell: systemctl status php-fpm  
+#    register: result1
+#  - name: Show debug info
+#    debug: var=result1  verbosity=0
+#  - name: restart
+#    systemd:
+#      state: restarted
+#      name: php-fpm
+#    register: result2
+#  - name: Show debug info
+#    debug: var=result2.status.FragmentPath verbosity=0
+##  - name: collect facts
+#    setup:
+#      gather_subset:
+#        - 'default_ipv4'
+#    register: result3
+#  - name: Show debug info
+#    debug: var=result3 verbosity=0

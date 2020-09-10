@@ -1,0 +1,6 @@
+---
+# tasks file for /etc/ansible/roles/cdsb.php
+- include: prepare.yml
+- include: copy.yml
+- include: install.yml
+#- include: test.yml

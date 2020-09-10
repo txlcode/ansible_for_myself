@@ -1,0 +1,12 @@
+---
+# vars file for /etc/ansible/roles/cdsb.mysql
+#
+# 用户添加普通用户和数据库，并且授权
+add_ordinary_mysql_users:
+  - name: jumpserver
+    host: "%"
+    password: 'jumpserver'
+    priv: "jumpserver.*:ALL"
+
+mysql_databases:
+  - name: jumpserver

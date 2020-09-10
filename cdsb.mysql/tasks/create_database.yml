@@ -1,0 +1,11 @@
+- name: Create database.
+  mysql_db:
+    login_user: "{{ mysql57_user }}"
+    login_password: "{{ mysql57_password }}"
+    name: "{{ item.name }}"
+    collation: "{{ item.collation | default('utf8_general_ci') }}"
+    encoding: "{{ item.encoding | default('utf8') }}"
+    state: "{{ item.state | default('present') }}"
+    config_file: "{{ mysql57_cnf }}"
+  with_items: "{{ mysql_databases }}"
+  tags: Create_database

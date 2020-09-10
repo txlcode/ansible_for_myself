@@ -1,0 +1,8 @@
+- name: 依赖包php 是否被下载
+  stat:
+    path: "{{ SOURCE_DIR }}/php-{{ PHP_VER }}.tar.gz"
+  register: file_php
+
+- name: 下载php包
+  get_url: url={{ DOWNLOAD_URL }} dest={{ SOURCE_DIR }} owner={{ PHP_USER }} group={{ PHP_USER }}
+  when: file_php.stat.exists == False

@@ -1,0 +1,15 @@
+- name: add orignal user
+  mysql_user:
+    login_user: "{{ mysql57_user }}"
+    login_password: "{{ mysql57_password }}"
+    name: "{{ item.name }}"
+    host: "{{ item.host | default('localhost') }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv | default('*.*:USAGE') }}"
+    state: "{{ item.state | default('present') }}"
+    append_privs: "{{ item.append_privs | default('no') }}"
+    encrypted: "{{ item.encrypted | default('no') }}"
+    config_file: "{{ mysql57_cnf }}"
+  with_items: "{{ add_ordinary_mysql_users }}"
+  no_log: true
+  tags: add_orignal_user

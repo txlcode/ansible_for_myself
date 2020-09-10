@@ -1,0 +1,12 @@
+
+- hosts: node01
+  vars:
+  - zabbix_server_db: zabbix
+  - zabbix_server_db_user: zabbix
+  - zabbix_server_db_password: zabbix
+  - zabbix_server_db_host: 192.168.0.214
+  - zabbix_server_install_from_source: true
+
+  roles:
+  - zabbix-server
+    

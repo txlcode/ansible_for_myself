@@ -1,0 +1,16 @@
+- name: Add  ssl directory.
+  file:
+    path: "{{ nginx_ssl_file_path }}"
+    state: directory
+  when: nginx_ssl_dir_mkdir | bool
+  notify: 
+  - reload nginx
+- name: copy ssl file.
+  copy: 
+    src: "{{ item }}" 
+    dest: "{{ nginx_ssl_file_path }}/{{ item }}"
+  when: nginx_ssl_dir_mkdir | bool
+  with_items:
+  - ssl-cert-cdsb.key
+  - ssl-cert-cdsb.pem
+  tags: skip-copy-ssl

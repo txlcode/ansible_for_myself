@@ -1,0 +1,10 @@
+mysql_root_password: 'txl538967281'
+mysql_databases:
+  - name: cdsb
+    encoding: utf8
+    collation: utf8_general_ci
+mysql_users:
+  - name: cdsb_user
+    host: "%"
+    password: similarly-secure-password
+    priv: "cdsb.*:ALL"

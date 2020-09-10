@@ -1,0 +1,43 @@
+---
+# defaults file for /etc/ansible/roles/cdsb.php
+php_source_configure_command: >
+  ./configure 
+  --prefix={{ PHP_DIR }} 
+  --with-config-file-path={{ PHP_DIR }}/etc 
+  --with-mysqli=mysqlnd 
+  --with-pdo-mysql=mysqlnd  
+  --with-iconv-dir 
+  --with-freetype-dir 
+  --with-jpeg-dir 
+  --with-png-dir 
+  --with-zlib 
+  --with-bz2 
+  --with-libxml-dir 
+  --with-curl 
+  --with-gd 
+  --with-openssl 
+  --with-mhash  
+  --with-xmlrpc 
+  --with-pdo-mysql 
+  --with-libmbfl 
+  --with-onig 
+  --with-pear 
+  --enable-xml 
+  --enable-bcmath 
+  --enable-shmop 
+  --enable-sysvsem 
+  --enable-inline-optimization 
+  --enable-mbregex 
+  --enable-fpm 
+  --enable-mbstring 
+  --enable-pcntl 
+  --enable-sockets 
+  --enable-zip 
+  --enable-soap 
+  --enable-opcache 
+  --enable-pdo 
+  --enable-mysqlnd-compression-support 
+  --enable-maintainer-zts  
+  --enable-session 
+  --with-fpm-user={{ PHP_USER }} 
+  --with-fpm-group={{ PHP_USER }}

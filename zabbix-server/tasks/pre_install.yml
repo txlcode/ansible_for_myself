@@ -1,0 +1,5 @@
+- name: configure_db | Create zabbix database.
+  shell: source /etc/profile; mysql -uroot -p123456 -h192.168.0.214 -P3306 -e "{{ item }}"
+  with_items:
+  - "create database {{ zabbix_server_db }} character set utf8 collate utf8_bin;"
+  - "grant all privileges on {{  zabbix_server_db }}.* to '{{ zabbix_server_db_user }}'@'{{ zabbix_server_db_host }}' identified by '{{ zabbix_server_db_password }}';"

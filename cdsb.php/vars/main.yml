@@ -1,0 +1,9 @@
+---
+# vars file for /etc/ansible/roles/cdsb.php
+PHP_VER: 7.2.6
+DOWNLOAD_URL: http://mirrors.sohu.com/php/php-{{ PHP_VER }}.tar.gz
+PHP_USER: fpm
+PHP_PORT: 9000
+SOURCE_DIR: /software
+PHP_DIR: /opt/php7
+#MYSQL_DIR: /usr/local/mysql

@@ -1,0 +1,18 @@
+#编译安装ldap模块
+- name: 编译安装ldap模块
+  shell: "cd {{ SOURCE_DIR }}/php-{{ PHP_VER }}/ext/ldap && cp -af /usr/lib64/libldap* /usr/lib/ && {{ PHP_DIR }}/bin/phpize && ./configure --with-php-config={{ PHP_DIR }}/bin/php-config && make && make install"
+  
+- name: 修改php-fpm配置_6
+  lineinfile:
+    dest: "{{ PHP_DIR }}/etc/php.ini"
+    regexp: ";extension=bz2"
+    line: "aextension=ldap.so"
+#编译安装gettext模块
+- name: 编译安装gettext模块
+  shell: "cd {{ SOURCE_DIR }}/php-{{ PHP_VER }}/ext/gettext && cp -af /usr/lib64/libldap* /usr/lib/ && {{ PHP_DIR }}/bin/phpize && ./configure --with-php-config={{ PHP_DIR }}/bin/php-config && make && make install"
+
+- name: 修改php-fpm配置_7
+  lineinfile:
+    dest: "{{ PHP_DIR }}/etc/php.ini"
+    regexp: ";extension=bz2"
+    line: "aextension=gettext.so"

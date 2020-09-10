@@ -1,0 +1,5 @@
+- name: install master
+  hosts: node01
+  roles:
+  - { role: cdsb.mysql,mysql57_install_from_source: true}
+

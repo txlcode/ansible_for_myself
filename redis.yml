@@ -1,0 +1,11 @@
+- hosts: node01
+  roles:
+    - { role: redis,redis_masterauth: '123456'}
+
+- hosts: node02
+  vars:
+   - redis_master_host: '192.168.0.214'
+   - redis_master_port: '6379'
+  roles:
+    - { role: redis,redis_masterauth: '123456', redis_port: 6379, redis_slave: true}
+    

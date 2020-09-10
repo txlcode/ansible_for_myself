@@ -1,0 +1,4 @@
+- name: instal nginx
+  hosts: jumpserver
+  roles:
+  - { role: geerlingguy.nginx}

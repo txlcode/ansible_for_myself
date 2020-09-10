@@ -1,0 +1,61 @@
+- name: 创建php用户组
+  group: name={{ PHP_USER }}  state=present
+
+- name: 创建php用户
+  user: name={{ PHP_USER }}  group={{ PHP_USER }}  state=present create_home=False shell=/sbin/nologin
+
+- name: 创建software目录
+  file: name={{ SOURCE_DIR }} state=directory mode=0755 recurse=yes
+
+
+- name: 依赖包libmcrypt 是否被下载
+  stat:
+    path: "{{ SOURCE_DIR }}/libmcrypt-2.5.8.tar.gz"
+  register: file_libmcrypt
+
+
+
+
+
+#当前主机下没有libmcrypt依赖包
+- name: 下载依赖包libmcrypt
+  get_url: url=https://jaist.dl.sourceforge.net/project/mcrypt/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz dest={{ SOURCE_DIR }}
+  when: file_libmcrypt.stat.exists == False 
+ 
+- name: 依赖包php 是否被下载
+  stat:
+    path: "{{ SOURCE_DIR }}/php-{{ PHP_VER }}.tar.gz"
+  register: file_php
+
+
+
+
+
+#当前主机file目录下已有libmcrypt依赖包
+#- name: 拷贝现有libmcrypt依赖包到所有主机
+#  copy: src=libmcrypt-2.5.8.tar.gz dest={{ SOURCE_DIR }}
+
+#当前主机下没有php包
+- name: 下载php包
+  get_url: url={{ DOWNLOAD_URL }} dest={{ SOURCE_DIR }} owner={{ PHP_USER }} group={{ PHP_USER }}
+  when: file_php.stat.exists == False
+#当前主机file目录下已有php包
+#- name: 拷贝现有php包到所有主机
+#  copy: src=php-{{ PHP_VER }}.tar.gz dest={{ SOURCE_DIR }} owner={{ PHP_USER }} group={{ PHP_USER }}
+
+- name: 解压依赖包libmcrypt
+  unarchive: 
+   src: "{{ SOURCE_DIR }}/libmcrypt-2.5.8.tar.gz" 
+   dest: "{{ SOURCE_DIR }}"
+   remote_src: yes
+
+- name: 编译安装libmcrypt
+  shell: "cd {{ SOURCE_DIR }}/libmcrypt-2.5.8 && ./configure && make && make install"
+  
+- name: 解压php包
+  unarchive: 
+    src: "{{ SOURCE_DIR }}/php-{{ PHP_VER }}.tar.gz" 
+    dest: "{{ SOURCE_DIR }}"
+    owner: "{{ PHP_USER }}" 
+    group: "{{ PHP_USER }}"
+    remote_src: yes

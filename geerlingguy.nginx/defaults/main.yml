@@ -1,0 +1,131 @@
+---
+# Used only for Debian/Ubuntu installation, as the -t option for apt.
+nginx_default_release: ""
+
+# Used only for Redhat installation, enables source Nginx repo.
+nginx_yum_repo_enabled: true
+#nginx启动的用户
+nginx_user: 'fpm'
+nginx_root_path: '/var/www/html/zabbix/php'
+# Use the official Nginx PPA for Ubuntu, and the version to use if so.
+nginx_ppa_use: false
+nginx_ppa_version: stable
+
+# The name of the nginx package to install.
+nginx_package_name: "nginx"
+
+nginx_service_state: started
+nginx_service_enabled: true
+
+nginx_conf_template: "nginx.conf.j2"
+nginx_vhost_template: "vhost.j2"
+
+nginx_worker_processes: >-
+  "{{ ansible_processor_vcpus | default(ansible_processor_count) }}"
+nginx_worker_connections: "1024"
+nginx_multi_accept: "off"
+
+nginx_error_log: "/var/log/nginx/error.log warn"
+nginx_access_log: "/var/log/nginx/access.log main buffer=16k flush=2m"
+
+nginx_sendfile: "on"
+nginx_tcp_nopush: "on"
+nginx_tcp_nodelay: "on"
+
+nginx_log_dir: '/data/logs/nginx'
+
+
+
+nginx_keepalive_timeout: "65"
+nginx_keepalive_requests: "100"
+
+nginx_server_tokens: "on"
+
+nginx_client_max_body_size: "64m"
+
+nginx_server_names_hash_bucket_size: "64"
+
+nginx_proxy_cache_path: ""
+
+nginx_extra_conf_options: ""
+# Example extra main options, used within the main nginx's context:
+#   nginx_extra_conf_options: |
+#     env VARIABLE;
+#     include /etc/nginx/main.d/*.conf;
+
+nginx_extra_http_options: ""
+# Example extra http options, printed inside the main server http config:
+#    nginx_extra_http_options: |
+#      proxy_buffering    off;
+#      proxy_set_header   X-Real-IP $remote_addr;
+#      proxy_set_header   X-Scheme $scheme;
+#      proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+#      proxy_set_header   Host $http_host;
+#删除yum安装nginx，生成的default.conf文件。true 表示删除
+nginx_remove_default_vhost: true
+#是否创建ssl文件夹
+nginx_ssl_dir_mkdir: true
+
+#设置vhost的配置
+nginx_vhosts:
+  #- listen: "444 ssl http2"
+  - listen: 80  
+    server_name: "www.cdsb.com"
+    root: "{{ nginx_root_path }}"
+    index: "index.php index.html index.htm"
+    error_log: "/data/logs/nginx/error.log"
+    access_log: "/data/logs/nginx/www.cdsb.com.log"
+    state: "present"
+    template: "{{ nginx_vhost_template }}"
+    extra_parameters: |
+      location ~ \.php$ {
+          fastcgi_split_path_info ^(.+\.php)(/.+)$;
+          fastcgi_pass 127.0.0.1:9000;
+          fastcgi_index index.php;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          include fastcgi_params;
+      }
+      ssl_certificate   ./ssl/ssl-cert-cdsb.pem;
+      ssl_certificate_key  ./ssl/ssl-cert-cdsb.key;
+      ssl_session_timeout 5m;
+      ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
+      ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+      ssl_prefer_server_ciphers on;
+
+
+
+
+
+
+
+
+
+# - listen: "80" # default: "80"
+#   server_name: "example.com" # default: N/A
+#   root: "/var/www/example.com" # default: N/A
+#   index: "index.html index.htm" # default: "index.html index.htm"
+#   filename: "example.com.conf" # Can be used to set the vhost filename.
+#
+#   # Properties that are only added if defined:
+#   server_name_redirect: "www.example.com" # default: N/A
+#   error_page: ""
+#   access_log: ""
+#   error_log: ""
+#   extra_parameters: "" # Can be used to add extra config blocks (multiline).
+#   template: "" # Can be used to override the `nginx_vhost_template` per host.
+#   state: "absent" # To remove the vhost configuration.
+
+nginx_upstreams: []
+# - name: myapp1
+#   strategy: "ip_hash" # "least_conn", etc.
+#   keepalive: 16 # optional
+#   servers: {
+#     "srv1.example.com",
+#     "srv2.example.com weight=3",
+#     "srv3.example.com"
+#   }
+
+nginx_log_format: |-
+  '$remote_addr - $remote_user [$time_local] "$request" '
+  '$status $body_bytes_sent "$http_referer" '
+  '"$http_user_agent" "$http_x_forwarded_for"'

@@ -1,0 +1,7 @@
+- name: install lnmp
+  hosts: lnmp
+  roles:
+  - { role: cdsb.mysql,mysql57_install_from_source: true}
+  - { role: cdsb.php}
+  - { role: geerlingguy.nginx}
+  
