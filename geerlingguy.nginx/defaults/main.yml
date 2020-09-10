@@ -70,7 +70,7 @@ nginx_ssl_dir_mkdir: true
 nginx_vhosts:
   #- listen: "444 ssl http2"
   - listen: 80  
-    server_name: "www.cdsb.com"
+    server_name: "example.com"
     root: "{{ nginx_root_path }}"
     index: "index.php index.html index.htm"
     error_log: "/data/logs/nginx/error.log"
